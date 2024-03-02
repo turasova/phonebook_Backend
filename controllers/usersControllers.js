@@ -2,7 +2,7 @@ import { createUser, isUserExist } from "../services/userServices.js";
 import HttpError from "../helpers/HttpError.js";
 
 export const signup = async (req, res, next) => {
-  const { email } = req.body;
+  const { name, email } = req.body;
 
   try {
     const user = await isUserExist(email);
@@ -11,6 +11,7 @@ export const signup = async (req, res, next) => {
     }
 
     const newUser = await createUser(req.body);
+    res.status(201).json({ token: newUser.token, user: { name, email } })
   } catch (error) {
     next(error);
   }
