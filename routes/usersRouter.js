@@ -1,8 +1,7 @@
 import express from "express";
 import { signup } from "../controllers/usersControllers.js";
-import { signupUserSchema } from "../schemas/userSchemas.js";
 import validateBody from "../helpers/validateBody.js";
-
+import { signupUserSchema } from "../schemas/userSchemas.js";
 const usersRouter = express.Router();
 
 usersRouter.post("/signup", validateBody(signupUserSchema), signup);
