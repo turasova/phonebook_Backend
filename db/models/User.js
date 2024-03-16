@@ -1,5 +1,5 @@
-import { model, Schema } from "mongoose";
-import bcryptjs from "bcryptjs";
+import { model, Schema } from 'mongoose';
+import bcryptjs from 'bcryptjs';
 
 const userSchema = new Schema(
   {
@@ -20,13 +20,18 @@ const userSchema = new Schema(
       default: null,
     },
   },
-  { versionKey: false }
+  { versionKey: false },
 );
 
 userSchema.methods.hashPassword = async function () {
   this.password = await bcryptjs.hash(this.password, 10);
 };
 
-const User = model("user", userSchema);
+userSchema.methods.comparePassword = async function (password) {
+  const isCompare = await bcryptjs.compare(password, this.password);
+  return isCompare;
+};
+
+const User = model('user', userSchema);
 
 export default User;
