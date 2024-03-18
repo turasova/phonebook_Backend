@@ -1,6 +1,5 @@
-
 import { model, Schema } from "mongoose";
-import bcrypt from 'bcryptjs';
+import bcryptjs from "bcryptjs";
 
 const userSchema = new Schema(
   {
@@ -20,13 +19,19 @@ const userSchema = new Schema(
       type: String,
       default: null,
     },
-
   },
   { versionKey: false }
 );
+
 userSchema.methods.hashPassword = async function () {
-  this.password = await bcrypt.hash(this.password, 10)
-}
+  this.password = await bcryptjs.hash(this.password, 10);
+};
+
+userSchema.methods.comparePassword = async function (password) {
+  const isCompare = await bcryptjs.compare(password, this.password);
+  return isCompare;
+};
+
 const User = model("user", userSchema);
 
 export default User;
